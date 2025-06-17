@@ -16,8 +16,7 @@ CSCI 5117, Fall 2024, [assignment description](https://canvas.umn.edu/courses/46
 
 ## Key Features
 
-**Describe the most challenging features you implemented
-(one sentence per bullet, maximum 4 bullets):**
+**Describe the most challenging features you implemented:**
 
 * Soft deletion of posts, when a post is deleted, it's rendered differently than the normal ones.
 
@@ -67,7 +66,7 @@ along with a very brief caption:**
 
 ## Mock-up 
 
-[Link to our mock-up](https://excalidraw.com/#json=2Io82bKyNfI4AMDp16nt4,qPc0-19dR60Sk5645kuqVQ)
+[Link to my mock-up](https://excalidraw.com/#json=2Io82bKyNfI4AMDp16nt4,qPc0-19dR60Sk5645kuqVQ)
 
 ## External Dependencies
 
