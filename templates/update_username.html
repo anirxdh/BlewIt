@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/pure-min.css" integrity="sha384-X38yfunGUhNzHpBaEBsWLO+A0HDYOQi8ufWDkZ0k9e0eXz/tH3II7uKZ9msv++Ls" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/grids-responsive-min.css">
+    <link rel="stylesheet" href="/static/css/homePage.css">
+    <link rel="stylesheet" href="/static/css/createUsername.css">
+    <link rel="icon" href="../static/images/BlueReddit.png" type="image/x-icon">
+    <title>Update Username</title>
+</head>
+<body>
+    <div class="header">
+        <div class="home-menu pure-menu pure-menu-horizontal pure-menu-fixed">
+            <div class="header-container">
+                <a href="/" class="pure-menu-link logo-container">
+                    <div class="logo-wrapper">
+                        <img src="../static/images/BlueReddit.png" alt="Logo" class="logo pure-img">
+                        <span class="logo-text">Blewit</span>
+                    </div>
+                </a>
+                <button class="hamburger">&#9776;</button>
+            </div>        
+        </div>
+    </div>
+    <div class="content-wrapper">
+        <div class="create-username-container">
+            <h1>Enter a New Username</h1>
+            <form method="POST" action="{{ url_for('update_user')}}" class="pure-form pure-form-stacked" id="updateForm">
+                <label for="username">Choose a unique username:</label>
+                <input type="text" id="username" name="username" class="pure-input-rounded" placeholder="Enter username" required>
+                <button type="submit" class="pure-button pure-button-primary submit-btn">Submit</button>
+                <button type="button" class="btn-cancel" onclick="window.location.href = '/myprofile'">Cancel</button>
+            </form>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+              {% if messages %}
+                <ul class="flash-messages">
+                  {% for category, message in messages %}
+                    <li class="{{ category }}">{{ message }}</li>
+                  {% endfor %}
+                </ul>
+              {% endif %}
+            {% endwith %}
+        </div>
+    </div>
+    <script>
+        document.querySelector('.hamburger').addEventListener('click', () => {
+            document.body.classList.toggle('sidebar-active');
+        });
+    </script>
+</body>
+</html>

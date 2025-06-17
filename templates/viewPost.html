@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/pure-min.css" integrity="sha384-X38yfunGUhNzHpBaEBsWLO+A0HDYOQi8ufWDkZ0k9e0eXz/tH3II7uKZ9msv++Ls" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/grids-responsive-min.css">
+    <link rel="stylesheet" href="/static/css/homePage.css">
+    <link rel="stylesheet" href="/static/css/viewPost.css">
+    <link rel="icon" href="../static/images/BlueReddit.png" type="image/x-icon">
+    <title>Blewit | Home</title>
+  </head>
+  <body>
+    <div class="header">
+      <div class="home-menu pure-menu pure-menu-horizontal pure-menu-fixed">
+        <div class="header-container">
+          <a href="/" class="pure-menu-link logo-container">
+            <div class="logo-wrapper">
+              <img src="../static/images/BlueReddit.png" alt="Logo" class="logo pure-img">
+              <span class="logo-text">Blewit</span>
+            </div>
+          </a>
+          <form class="pure-form search-container" method="GET" action="/search">
+            <input type="text" class="pure-input-rounded search-input" id="search-input" name="q" placeholder="Search..." />
+            <button type="submit" class="pure-button search-button">Search</button>
+          </form>
+          <div class="auth-buttons"> {% if 'user' in session %} <a href="{{ url_for('myprofile', username=session['user']['username']) }}" class="pure-button profile-button">Profile</a>
+            <a href="{{ url_for('auth.logout') }}" class="pure-button logout-button">Logout</a> {% else %} <a href="{{ url_for('auth.login') }}" class="pure-button login-button">Login</a>
+            <a href="{{ url_for('auth.signup') }}" class="pure-button signup-button">Sign Up</a> {% endif %}
+          </div>
+          <button class="hamburger">&#9776;</button>
+        </div>
+      </div>
+    </div>
+    <div class="grid-container">
+        <div class="sidebar">
+          <ul class="pure-menu-list">
+            <li class="pure-menu-item">
+              <a href="#" class="pure-menu-link" data-category="home" id="homeLink">Home</a>
+            </li> {% set all_categories = [ 'sports', 'games', 'health', 'movies', 'politics'] %}
+            <!-- Show all categories if the user is not logged in --> {% if 'user' not in session %} {% for category in all_categories %} <li class="pure-menu-item">
+              <a href="javascript:void(0);" class="pure-menu-link" data-category="{{ category }}" id="category-{{ category }}">{{ category | capitalize }}</a>
+            </li> {% endfor %} {% else %}
+            <!-- Show only the categories that the logged-in user follows --> {% for category in category_followed %} <li class="pure-menu-item">
+              <a href="javascript:void(0);" class="pure-menu-link" data-category="{{ category }}" id="category-{{ category }}">{{ category | capitalize }}</a>
+            </li> {% endfor %}
+            <!-- <h1>{{ category_followed }}</h1> -->
+            <!-- Edit Categories Button -->
+            <button class="pure-button edit-categories-button" id="editCategoriesButton">Edit Categories</button>
+            <!-- Categories edit section, hidden by default -->
+            <div id="editCategoriesSection" style="display: none;">
+              <ul class="pure-menu-list"> {% for category in all_categories %} <li class="pure-menu-item">
+                  <!-- <h1>{{category}}</h1> --> {% if category in category_followed %} <button class="pure-button category-button" data-category="{{ category }}" id="removeCategory-{{ category }}">- {{ category | capitalize }}</button> {% else %} <button class="pure-button category-button" data-category="{{ category }}" id="addCategory-{{ category }}">+ {{ category | capitalize }}</button> {% endif %}
+                </li> {% endfor %} </ul>
+              <button class="pure-button save-categories-button" id="saveCategoriesButton">Save Changes</button>
+            </div> {% endif %}
+          </ul>
+        </div>
+      <div class="content">
+        <!-- Post Section -->
+        <div class="profile-post">
+          <div class="profile-section"> {% if not post.deleted %} <img width="40" height="40" alt="User Profile Picture" class="profile-pic" src="/static/images/userdefaultimage.png">
+            <p class="user-name">
+              <a href="{{ url_for('profilePage', username=post.author_name) }}" class="user-link">
+                {{ post.author_name }}
+              </a>
+            </p> {% else %} <img width="40" height="40" alt="User Profile Picture" class="profile-pic" src="/static/images/userdefaultimage.png">
+            <p class="user-name">[DELETED]</p> {% endif %}
+          </div>
+          <div class="post-category"> {% if not post.deleted %} <a href="#" onclick="fetchPostsByCategory('{{ post.category }}')">{{ post.category }}</a> {% else %} <p>[DELETED]</p> {% endif %} </div>
+          <div class="post-section">
+            <div class="post-header">
+                <h3 class="post-title">{{ post.title }}</h3>
+                <div class="vote-section">
+                    {% if not post.deleted %}
+                        <a href="#" class="pure-button upvote-button" data-pid="{{ post.pid }}">Upvote</a>
+                        <a href="#" class="pure-button downvote-button" data-pid="{{ post.pid }}">Downvote</a>
+                        <span id="post-upvotes">{{ post.upvotes }}</span> Upvotes
+                        <span id="post-downvotes">{{ post.downvotes }}</span> Downvotes
+                    {% else %}
+                        <span id="post-upvotes">{{ post.upvotes }}</span> Upvotes
+                        <span id="post-downvotes">{{ post.downvotes }}</span> Downvotes
+                    {% endif %}
+                </div>
+            </div>
+            {% if not post.deleted %}
+                <div class="post-content">
+                    <p>{{ post.content }}</p>
+                </div>
+            {% else %}
+                <div class="post-content">
+                    <p>[This post has been deleted]</p>
+                </div>
+            {% endif %}    
+            {% if post.image and not post.deleted %}
+                <div class="post-image-container">
+                    <img src="{{ post.image }}" alt="Post image" />
+                </div>
+            {% endif %}
+          </div>
+        </div>
+        <!-- Comment Section -->
+        <div class="comments-section">
+          <div class="comments-header">
+            <h3>Comments</h3>
+            <div class="filter-options">
+              <select id="filter-select">
+                <option value="all">All</option>
+                <option value="upvotes">Most Upvoted</option>
+                <option value="downvotes">Most Downvoted</option>
+                <option value="newest">Newest</option>
+                <option value="oldest">Oldest</option>
+              </select>
+            </div>
+          </div> {%if not post.deleted %} <div class="add-comment">
+            <form class="pure-form pure-form-stacked" id="add-comment-form">
+              <label for="new-comment">Add a Comment</label>
+              <textarea id="new-comment" placeholder="Write your comment here..."></textarea>
+              {% if 'user' in session %}
+              <button type="submit" class="pure-button pure-button-primary">Submit</button>
+              {% else %}
+             <a href="{{ url_for('auth.login') }}" class="pure-button pure-button-primary">Submit</a>
+                                    
+              {% endif %}
+            </form>
+          </div> {% endif %} <div class="comments-list" id="comments-list"> {% for reply in replies %} <div class="comment" data-cid="{{ reply.cid }}">
+              <div class="comment-header">
+                <img src="/static/images/userdefaultimage.png" width="40" height="40" alt="User Profile Picture" class="profile-pic">
+                <p class="user-name">
+                  <a href="{{ url_for('profilePage', username=reply.author_name) }}" class="user-link">
+                    {{ reply.author_name }}
+                  </a>
+                </p>
+                <p class="comment-time">{{ reply.created_at.strftime('%Y-%m-%d %H:%M') }}</p>
+              </div>
+              <div class="comment-content">
+                <p class="comment-text">{{ reply.content }}</p>
+                <div class="comment-actions">
+                  <a href="#" class="pure-button pure-button-small upvote-button" data-cid="{{ reply.cid }}">Upvote</a>
+                  <a href="#" class="pure-button pure-button-small downvote-button" data-cid="{{ reply.cid }}">Downvote</a>
+                  <span class="reply-upvotes">{{ reply.upvotes }}</span> Upvotes <span class="reply-downvotes">{{ reply.downvotes }}</span> Downvotes
+                </div>
+              </div>
+            </div> {% endfor %} </div>
+        </div>
+        <!-- Comment Section Ends Here -->
+      </div>
+    </div>
+
+    {% if 'user' in session %}
+    <div id="data" data-currentuser={{current_user}} style="display: none;"></div>
+    {% else %}
+    <div id="data" style="display: none;"></div>
+    {% endif %}
+    <script src="/static/js/viewPost.js"></script>
+    <script src="/static/js/myprofile.js"></script>
+  </body>
+</html>

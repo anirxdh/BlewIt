@@ -1,0 +1,8 @@
+.checkbox-label {
+    display: inline-flex !important;
+    align-items: center !important;
+  }
+  
+.checkbox-label input[type="checkbox"] {
+    margin-right: 8px; /* Add some space between checkbox and label text */
+  }

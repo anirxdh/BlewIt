@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    
+        <!-- Pure CSS -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/pure-min.css" integrity="sha384-X38yfunGUhNzHpBaEBsWLO+A0HDYOQi8ufWDkZ0k9e0eXz/tH3II7uKZ9msv++Ls" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/grids-responsive-min.css">
+    
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="/static/css/homePage.css">
+        <link rel="stylesheet" href="/static/css/newPost.css"> 
+    
+        <link rel="icon" href="../static/images/BlueReddit.png" type="image/x-icon">
+        <title>Blueit | Home</title>
+    </head>
+
+<body>
+    <div class="header">
+        <div class="home-menu pure-menu pure-menu-horizontal pure-menu-fixed">
+            <div class="header-container">
+                <a href="/" class="pure-menu-link logo-container">
+                    <div class="logo-wrapper">
+                        <img src="../static/images/BlueReddit.png" alt="Logo" class="logo pure-img">
+                        <span class="logo-text">Blewit</span>
+                    </div>
+                </a>
+                <form class="pure-form search-container" method="GET" action="/search">
+                    <input type="text" class="pure-input-rounded search-input" id="search-input" name="q" placeholder="Search..." />
+                    <button type="submit" class="btn btn-primary search-button">Search</button> <!-- Bootstrap Button -->
+                </form>
+
+                <div class="auth-buttons">
+                    {% if 'user' in session %}
+                        <a href="{{ url_for('myprofile', username=session['user']['username']) }}" class="btn btn-secondary profile-button">Profile</a> <!-- Bootstrap Button -->
+                        <a href="{{ url_for('auth.logout') }}" class="btn btn-danger logout-button">Logout</a> <!-- Bootstrap Button -->
+                    {% else %}
+                        <a href="{{ url_for('auth.login') }}" class="btn btn-primary login-button">Login</a> <!-- Bootstrap Button -->
+                        <a href="{{ url_for('auth.signup') }}" class="btn btn-success signup-button">Sign Up</a> <!-- Bootstrap Button -->
+                    {% endif %}
+                </div>
+
+                <button id="hamburger" class="hamburger">&#9776;</button>
+            </div>        
+        </div>
+    </div>
+
+    <div class="grid-container">
+        <!-- <div class="sidebar">
+            <ul class="pure-menu-list">
+                <li class="pure-menu-item"><a href="/" class="pure-menu-link" onclick="fetchPostsByCategory('home')">Home</a></li>
+                <li class="pure-menu-item"><a href="/?category=sports" class="pure-menu-link" data-category="sports" onclick="fetchPostsByCategory('sports')">Sports</a></li>
+                <li class="pure-menu-item"><a href="/?category=games" class="pure-menu-link" data-category="games" onclick="fetchPostsByCategory('games')">Games</a></li>
+                <li class="pure-menu-item"><a href="/?category=health" class="pure-menu-link" data-category="health" onclick="fetchPostsByCategory('health')">Health</a></li>
+                <li class="pure-menu-item"><a href="/?category=movies" class="pure-menu-link" data-category="movies" onclick="fetchPostsByCategory('movies')">Movies</a></li>
+                <li class="pure-menu-item"><a href="/?category=politics" class="pure-menu-link" data-category="politics" onclick="fetchPostsByCategory('politics')">Politics</a></li>
+            </ul>
+        </div> -->
+
+            <div class="sidebar">
+                <ul class="pure-menu-list">
+                    <li class="pure-menu-item">
+                        <a href="#" class="pure-menu-link" data-category="home" id="homeLink">Home</a>
+                    </li> 
+                    {% set all_categories = ['sports', 'games', 'health', 'movies', 'politics'] %}
+
+                    {% if 'user' not in session %}
+                        {% for category in all_categories %}
+                            <li class="pure-menu-item">
+                                <a href="javascript:void(0);" class="pure-menu-link" data-category="{{ category }}" id="category-{{ category }}">{{ category | capitalize }}</a>
+                            </li>
+                        {% endfor %}
+                    {% else %}
+                        {% for category in category_followed %}
+                            <li class="pure-menu-item">
+                                <a href="javascript:void(0);" class="pure-menu-link" data-category="{{ category }}" id="category-{{ category }}">{{ category | capitalize }}</a>
+                            </li>
+                        {% endfor %}
+                        <button class="pure-button edit-categories-button" id="editCategoriesButton">Edit Categories</button>
+                        <div id="editCategoriesSection" style="display: none;">
+                            <ul class="pure-menu-list">
+                                {% for category in all_categories %}
+                                    <li class="pure-menu-item">
+                                        {% if category in category_followed %}
+                                            <button class="pure-button category-button" data-category="{{ category }}" id="removeCategory-{{ category }}">- {{ category | capitalize }}</button>
+                                        {% else %}
+                                            <button class="pure-button category-button" data-category="{{ category }}" id="addCategory-{{ category }}">+ {{ category | capitalize }}</button>
+                                        {% endif %}
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    {% endif %}
+                </ul>
+            </div>
+    
+        <!-- Profile Container -->
+        <div id="profile-container" class="profile-container">
+            <div class="user-info">
+                <img src="https://i.ibb.co/HgK4Gx4/openart-image-h-Lypo-Jj-V-1729037782860-raw.jpg" alt="User Profile Picture" class="profile-picture">
+                <div class="user-details">
+                    <h1>{{ user.username }}</h1>
+                    <p>{{ user.email }}</p>
+        
+                    {% if is_current_user %}
+                    <div class="profile-actions">
+                        <button onclick="location.href='/edituser'" class="pure-button">Edit Profile</button>
+                        <a href="{{ url_for('auth.logout') }}" class="pure-button pure-button-primary">Sign Out</a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        
+            {% if is_current_user %}
+            <div class="post-input">
+                <input type="text" placeholder="What do you want to share today?" onclick="location.href='/newpost';">
+                <button onclick="location.href='/newpost';">+</button>
+            </div>
+            {% endif %}
+        
+            <div class="user-posts">
+                <h2>{% if is_current_user %}Your Posts{% else %}{{ user.username }}'s Posts{% endif %}</h2>
+                <div id="userPostSection">
+                    {% set non_deleted_posts = 0 %}
+                    {% for post in posts %}
+                        {% if not post.deleted %}
+                            {% set non_deleted_posts = non_deleted_posts + 1 %}
+                            <div class="post-container">
+                                <header class="post-header">
+                                    <h3 class="post-title">
+                                        <a href="/viewpost?pid={{ post.pid }}" class="post-link">{{ post.title }}</a>
+                                    </h3>
+                                    {% if post.image %}
+                                        <div class="post-image-container">
+                                            <div class="post-image-backdrop"></div>
+                                            <div class="post-image-wrapper">
+                                                <img src="{{ post.image }}" alt="{{ post.title }}" class="post-image">
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                    <p class="post-meta">By <a href="/profile/{{ post.author_name }}" class="user-link">{{ post.author_name or 'anonymous' }}</a> - {{ post.created_at }}</p>
+                                    <h4 class="post-tag">
+                                        <a href="/?category={{ post.category }}" class="category-link">{{ post.category }}</a>
+                                    </h4>
+                                </header>
+                                <div class="post-description">
+                                    <p>{{ post.content }}</p>
+                                    <div class="post-stats user-actions">
+                                        <button class="pure-button upvote upvote-button" data-pid="{{ post.pid }}" id="post-upvotes-{{ post.pid }}">👍 {{ post.upvotes }} Upvote</button>
+                                        <button class="pure-button downvote downvote-button" data-pid="{{ post.pid }}" id="post-downvotes-{{ post.pid }}">👎 {{ post.downvotes }} Downvote</button>
+                                        <!-- <span class="pure-button upvote upvote-button" data-pid="{{ post.pid }}" id="post-upvotes-{{ post.pid }}"> {{ post.upvotes }}</span> Upvotes
+                                        <span class="pure-button downvote downvote-button" id="post-downvotes-{{ post.pid }}"> {{ post.downvotes }}</span> Downvotes -->
+                                        <a href="/viewpost?pid={{ post.pid }}" class="pure-button comment">💬 {{ post.replies | length }}  Comment</a>
+
+                                        <!-- <button class="pure-button comment">💬 {{ post.replies | length }} Comment</button> -->
+                                        {% if is_current_user %}
+                                            <button class="pure-button edit" onclick="event.stopPropagation();window.location.href = '/editpost/' + {{ post.pid }}">Edit</button>
+                                            <button class="pure-button delete" onclick="event.stopPropagation();deletepost({{ post.pid }})">Delete</button>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                    {% if non_deleted_posts == 0 %}
+                        <p>No posts to display.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    
+        <!-- Posts Section -->
+        <div id="posts-section" class="posts-section" style="display:none;"> </div>
+    </div>
+
+<script src="/static/js/myprofile.js"></script>
+<!-- Bootstrap JS & dependencies -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

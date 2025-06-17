@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/pure-min.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/grids-responsive-min.css">
+        <link rel="stylesheet" href="/static/css/homePage.css">
+        <link rel="stylesheet" href="/static/css/newPost.css"> 
+        <link rel="icon" href="../static/images/BlueReddit.png" type="image/x-icon">
+        <title>Blewit | Home</title>
+    </head>
+
+    <body>
+        <div class="header">
+            <div class="home-menu pure-menu pure-menu-horizontal pure-menu-fixed">
+                <div class="header-container">
+                    <a href="/" class="pure-menu-link logo-container">
+                        <div class="logo-wrapper">
+                            <img src="../static/images/BlueReddit.png" alt="Logo" class="logo pure-img">
+                            <span class="logo-text">Blewit</span>
+                        </div>
+                    </a>
+                    <form class="pure-form search-container" method="GET" action="/search">
+                        <input type="text" class="pure-input-rounded search-input" id="search-input" name="q" placeholder="Search..." />
+                        <button type="submit" class="btn btn-primary search-button">Search</button>
+                    </form>
+
+                    <div class="auth-buttons">
+                        {% if 'user' in session %}
+                            <a href="{{ url_for('myprofile', username=session['user']['username']) }}" class="btn btn-secondary profile-button">Profile</a> 
+                            <a href="{{ url_for('auth.logout') }}" class="btn btn-danger logout-button">Logout</a> 
+                        {% else %}
+                            <a href="{{ url_for('auth.login') }}" class="btn btn-primary login-button">Login</a> 
+                            <a href="{{ url_for('auth.signup') }}" class="btn btn-success signup-button">Sign Up</a> 
+                        {% endif %}
+                    </div>
+                    <button id="hamburger" class="hamburger">&#9776;</button>
+                </div>        
+            </div>
+        </div>
+
+        <div class="grid-container">
+            <div class="sidebar">
+                <ul class="pure-menu-list">
+                    <li class="pure-menu-item">
+                        <a href="#" class="pure-menu-link" data-category="home" id="homeLink">Home</a>
+                    </li> 
+                    {% set all_categories = ['sports', 'games', 'health', 'movies', 'politics'] %}
+
+                    {% if 'user' not in session %}
+                        {% for category in all_categories %}
+                            <li class="pure-menu-item">
+                                <a href="javascript:void(0);" class="pure-menu-link" data-category="{{ category }}" id="category-{{ category }}">{{ category | capitalize }}</a>
+                            </li>
+                        {% endfor %}
+                    {% else %}
+                        {% for category in category_followed %}
+                            <li class="pure-menu-item">
+                                <a href="javascript:void(0);" class="pure-menu-link" data-category="{{ category }}" id="category-{{ category }}">{{ category | capitalize }}</a>
+                            </li>
+                        {% endfor %}
+                        <button class="pure-button edit-categories-button" id="editCategoriesButton">Edit Categories</button>
+                        <div id="editCategoriesSection" style="display: none;">
+                            <ul class="pure-menu-list">
+                                {% for category in all_categories %}
+                                    <li class="pure-menu-item">
+                                        {% if category in category_followed %}
+                                            <button class="pure-button category-button" data-category="{{ category }}" id="removeCategory-{{ category }}">- {{ category | capitalize }}</button>
+                                        {% else %}
+                                            <button class="pure-button category-button" data-category="{{ category }}" id="addCategory-{{ category }}">+ {{ category | capitalize }}</button>
+                                        {% endif %}
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    {% endif %}
+                </ul>
+            </div>
+
+            <div class="content">
+                <div class="newpost-section">
+                    <div class="newpost-container">
+                        {% if 'user' in session %}
+                            <input type="text" placeholder="Tap here to post something" class="newpost" onclick="location.href='/newpost';">
+                            <a href="/newpost" class="pure-button new-post-button" id="new-post-button">New</a>
+                            <button class="pure-button filter-button">Filter</button>
+                        {% else %}
+                            <input type="text" placeholder="Login/Sign Up to post something" class="newpost">
+                            <a href="{{ url_for('auth.login') }}" class="pure-button new-post-button" id="new-post-button">New</a>
+                            <a href="{{ url_for('auth.login') }}" class="pure-button filter-button">Filter</a>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="post-section" id="postSection">
+                    {% for post in posts %}
+                    <div class="post-container">
+                        <header class="post-header">
+                            <h3 class="post-title">
+                                <a href="/viewpost?pid={{ post.pid }}" class="post-link">{{ post.title }}</a>
+                            </h3>
+                            {% if post.image and not post.deleted %}
+                                <div class="post-image-container">
+                                    <div class="post-image-backdrop"></div>
+                                    <div class="post-image-wrapper">
+                                        <img src="{{ post.image }}" alt="{{ post.title }}" class="post-image">
+                                    </div>
+                                </div>
+                            {% endif %}
+                            {% if not post.deleted %}
+                                <p class="post-meta">By <a href="/profile/{{ post.author_name }}" class="user-link">{{ post.author_name or 'anonymous' }}</a> - {{ post.created_at }}</p>
+                                <h4 class="post-tag">
+                                    <a href="/?category={{ post.category }}" class="category-link">{{ post.category }}</a>
+                                </h4>
+                            {% else %}
+                                <p class="post-meta">[DELETED]</p>
+                                <h4 class="post-tag">
+                                    <a href="javascript:void(0);" class="category-link">[DELETED]</a>
+                                </h4>
+                            {% endif %}
+                        </header>
+                            <div class="post-description">
+                                {% if not post.deleted %}
+                                <p>{{ post.content }}</p>
+                                {% else %}
+                                <p>[DELETED]</p>
+                                {% endif %}
+                            </div>
+                            <div class="post-stats user-actions">
+                                {% if 'user' in session %}
+                                    {% if not post.deleted %}
+                                    <button class="pure-button upvote" data-pid="{{ post.pid }}">👍 {{ post.upvotes }} Upvote</button>
+                                    <button class="pure-button downvote" data-pid="{{ post.pid }}">👎 {{ post.downvotes }} Downvote</button>
+                                    <a href="/viewpost?pid={{ post.pid }}" class="pure-button comment">💬 {{ post.replies | length }}  Comment</a>
+
+                                    {% else %}
+                                    <button class="pure-button upvote" onclick="alert('This Post is Deleted');event.stopImmediatePropagation();">👍 {{ post.upvotes }} Upvote</button>
+                                    <button class="pure-button downvote" onclick="alert('This Post is Deleted');event.stopImmediatePropagation();">👎 {{ post.downvotes }} Downvote</button>
+                                    <a href="/viewpost?pid={{ post.pid }}" class="pure-button comment">💬 {{ post.replies | length }}  Comment</a>
+
+                                    {% endif %}
+                                {% else %}
+                                    <a href="{{ url_for('auth.login') }}" class="pure-button upvote">👍 {{ post.upvotes }} Upvote</a>
+                                    <a href="{{ url_for('auth.login') }}" class="pure-button downvote">👎 {{ post.downvotes }} Downvote</a>
+                                    <a href="{{ url_for('auth.login') }}" class="pure-button comment">💬 {{ post.replies.length }} Comment</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <script src="/static/js/homePage.js"></script>s
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+    </body>
+</html>

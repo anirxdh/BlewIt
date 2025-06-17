@@ -1,0 +1,136 @@
+body, html {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: #181818;
+    color: #E0E0E0;
+    font-family: Arial, sans-serif;
+}
+.header {
+    background-color: #1a1a1a;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+}
+.home-menu {
+    padding: 0.5em;
+}
+.logo-container {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+}
+.logo-wrapper {
+    display: flex;
+    align-items: center;
+}
+.logo {
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
+}
+.logo-text {
+    color: #ffffff;
+    font-size: 1.2em;
+    font-weight: bold;
+}
+.search-container {
+    display: flex;
+    align-items: center;
+    margin: 0 1em;
+}
+.search-input {
+    background-color: #333;
+    border: 1px solid #444;
+    color: #E0E0E0;
+    padding: 0.5em;
+    margin-right: 0.5em;
+}
+.search-button {
+    background-color: #1590E3;
+    color: #fff;
+}
+.auth-buttons {
+    display: flex;
+    gap: 0.5em;
+}
+.auth-buttons .pure-button {
+    background-color: #333;
+    color: #fff;
+}
+.content-wrapper {
+    display: flex;
+    justify-content: center;
+    padding-top: 60px;
+    min-height: calc(100vh - 60px);
+    width: 100%;
+    background-color: #181818;
+}
+.search-results-container {
+    width: 100%;
+    max-width: 800px;
+    padding: 20px;
+    margin: 0 auto;
+}
+.search-results-container h2 {
+    color: #E0E0E0;
+    font-size: 24px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+.post-list {
+    list-style-type: none;
+    padding: 0;
+}
+.post {
+    background-color: #2c2c2c;
+    border-radius: 4px;
+    padding: 15px;
+    margin-bottom: 15px;
+}
+.post-title {
+    color: #1590E3;
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+.post-content {
+    margin-bottom: 10px;
+}
+.read-more {
+    color: #1590E3;
+    text-decoration: none;
+}
+.post-meta {
+    color: #888;
+    font-size: 0.9em;
+}
+.no-results {
+    text-align: center;
+    color: #888;
+}
+
+.user-link {
+    color: #1590E3;
+    text-decoration: none;
+    font-weight: bold;  /* This will make the usernames more prominent */
+}
+
+.user-link:hover {
+    text-decoration: underline;
+    color: #1DA1F2; /* Slightly lighter hover color for a visual cue */
+}
+@media screen and (max-width: 48em) {
+    .header-container {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .search-container {
+        margin: 1em 0;
+    }
+    .auth-buttons {
+        justify-content: center;
+        margin-top: 1em;
+    }
+}

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/pure-min.css" integrity="sha384-X38yfunGUhNzHpBaEBsWLO+A0HDYOQi8ufWDkZ0k9e0eXz/tH3II7uKZ9msv++Ls" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/grids-responsive-min.css">
+    <link rel="stylesheet" href="/static/css/homePage.css">
+    <link rel="stylesheet" href="/static/css/createUsername.css">
+    <link rel="icon" href="../static/images/BlueReddit.png" type="image/x-icon">
+    <title>Create Username</title>
+</head>
+<body>
+    <div class="header">
+        <div class="home-menu pure-menu pure-menu-horizontal pure-menu-fixed">
+            <div class="header-container">
+                <a href="/" class="pure-menu-link logo-container">
+                    <div class="logo-wrapper">
+                        <img src="../static/images/BlueReddit.png" alt="Logo" class="logo pure-img">
+                        <span class="logo-text">Blewit</span>
+                    </div>
+                </a>
+                <button class="hamburger">&#9776;</button>
+            </div>        
+        </div>
+    </div>
+    <div class="content-wrapper">
+        <div class="create-username-container">
+            <h1>Create Your Username</h1>
+            <form method="POST" action="{{ url_for('auth.create_username') }}" class="pure-form pure-form-stacked">
+                <label for="username">Choose a unique username:</label>
+                <input type="text" id="username" name="username" class="pure-input-rounded" placeholder="Enter username" required>
+                <label for="categories">Select at least one category to follow:</label>
+                <div id="categories" class="categories-checkbox">
+                    <label>
+                        <input type="checkbox" name="categories_followed" value="sports"> Sports
+                    </label>
+                    <label>
+                        <input type="checkbox" name="categories_followed" value="games"> Games
+                    </label>
+                    <label>
+                        <input type="checkbox" name="categories_followed" value="health"> Health
+                    </label>
+                    <label>
+                        <input type="checkbox" name="categories_followed" value="movies"> Movies
+                    </label>
+                    <label>
+                        <input type="checkbox" name="categories_followed" value="politics"> Politics
+                    </label>
+                </div>
+                <button type="submit" class="pure-button pure-button-primary submit-btn">Submit</button>
+            </form>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+              {% if messages %}
+                <ul class="flash-messages">
+                  {% for category, message in messages %}
+                    <li class="{{ category }}">{{ message }}</li>
+                  {% endfor %}
+                </ul>
+              {% endif %}
+            {% endwith %}
+        </div>
+    </div>
+    <script>
+        document.querySelector('.hamburger').addEventListener('click', () => {
+            document.body.classList.toggle('sidebar-active');
+        });
+        function validateForm() {
+            const checkboxes = document.querySelectorAll('input[name="categories_followed"]:checked');
+            if (checkboxes.length === 0) {
+                alert("Please select at least one category to follow.");
+                return false; 
+            }
+            return true; 
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+{
+    "users": [
+      {"username": "john_doe", "email": "john.doe@example.com", "category_followed": ["sports", "movies"], "created_at": "2024-10-01 08:30:00"},
+      {"username": "jane_smith", "email": "jane.smith@example.com", "category_followed": ["games", "health"], "created_at": "2024-10-02 09:45:00"},
+      {"username": "mike_brown", "email": "mike.brown@example.com", "category_followed": ["politics"], "created_at": "2024-10-03 10:15:00"},
+      {"username": "alice_jones", "email": "alice.jones@example.com", "category_followed": [], "created_at": "2024-10-04 11:00:00"},
+      {"username": "chris_white", "email": "chris.white@example.com", "category_followed": ["health", "sports"], "created_at": "2024-10-05 12:30:00"},
+      {"username": "luke_perry", "email": "luke.p@example.com", "category_followed": ["games", "politics"], "created_at": "2024-10-06 14:00:00"},
+      {"username": "samantha_ray", "email": "samantha.r@example.com", "category_followed": ["sports"], "created_at": "2024-10-07 15:30:00"}
+    ],
+    "posts": [
+      {"pid": 1, "title": "Thrilling Football Final", "content": "A detailed review of the season's thrilling finale.", "upvotes": 150, "downvotes": 20, "created_at": "2024-10-04 10:30:00", "author_name": "john_doe", "category": "sports", "deleted": false},
+      {"pid": 2, "title": "Upcoming Game Releases", "content": "A sneak peek into the most anticipated game releases.", "upvotes": 120, "downvotes": 30, "created_at": "2024-10-04 11:15:00", "author_name": "jane_smith", "category": "games", "deleted": false},
+      {"pid": 3, "title": "Election Analysis 2024", "content": "Deep dive into the election results and implications.", "upvotes": 200, "downvotes": 50, "created_at": "2024-10-04 12:00:00", "author_name": "mike_brown", "category": "politics", "deleted": false},
+      {"pid": 4, "title": "Blockbuster Weekend Roundup", "content": "Recap of the biggest hits and misses at the box office.", "upvotes": 90, "downvotes": 10, "created_at": "2024-10-04 12:45:00", "author_name": "alice_jones", "category": "movies", "deleted": false},
+      {"pid": 5, "title": "Wellness Tips for Autumn", "content": "Best practices for staying healthy as the season changes.", "upvotes": 80, "downvotes": 5, "created_at": "2024-10-04 13:30:00", "author_name": "chris_white", "category": "health", "deleted": false},
+      {"pid": 6, "title": "VR Gaming: The Next Frontier", "content": "Exploring the future of virtual reality in gaming.", "upvotes": 110, "downvotes": 20, "created_at": "2024-10-04 14:15:00", "author_name": "luke_perry", "category": "games", "deleted": false},
+      {"pid": 7, "title": "The Rise of E-Sports", "content": "How e-sports are becoming a major league sport.", "upvotes": 135, "downvotes": 15, "created_at": "2024-10-04 15:00:00", "author_name": "samantha_ray", "category": "sports", "deleted": false},
+      {"pid": 8, "title": "Healthy Eating Trends", "content": "Exploring the latest trends in healthy eating.", "upvotes": 70, "downvotes": 8, "created_at": "2024-10-04 15:45:00", "author_name": "jane_smith", "category": "health", "deleted": false},
+      {"pid": 9, "title": "Future of Cinema", "content": "What lies ahead for the film industry.", "upvotes": 85, "downvotes": 12, "created_at": "2024-10-04 16:30:00", "author_name": "alice_jones", "category": "movies", "deleted": false},
+      {"pid": 10, "title": "Virtual Reality in Healthcare", "content": "The impact of VR on healthcare practices.", "upvotes": 75, "downvotes": 7, "created_at": "2024-10-04 17:15:00", "author_name": "chris_white", "category": "health", "deleted": false},
+      {"pid": 11, "title": "Political Campaign Strategies", "content": "Analysis of successful campaign strategies.", "upvotes": 150, "downvotes": 25, "created_at": "2024-10-04 17:30:00", "author_name": "mike_brown", "category": "politics", "deleted": false},
+      {"pid": 12, "title": "Innovations in Sports Tech", "content": "Latest technological advances in sports.", "upvotes": 95, "downvotes": 20, "created_at": "2024-10-04 18:00:00", "author_name": "samantha_ray", "category": "sports", "deleted": false}
+    ],
+    "replies": [
+      {"cid": 1, "content": "Absolutely agree, it was a stunning match!", "upvotes": 50, "downvotes": 5, "created_at": "2024-10-04 10:40:00", "author_name": "samantha_ray", "post_id": 1, "deleted": false},
+      {"cid": 2, "content": "What a game! Thanks for the recap.", "upvotes": 45, "downvotes": 2, "created_at": "2024-10-04 10:50:00", "author_name": "chris_white", "post_id": 1, "deleted": false},
+      {"cid": 3, "content": "Thoughtful analysis, thanks for sharing.", "upvotes": 60, "downvotes": 8, "created_at": "2024-10-04 12:10:00", "author_name": "emily_clark", "post_id": 3, "deleted": false},
+      {"cid": 4, "content": "I disagree with some points, but interesting perspective.", "upvotes": 30, "downvotes": 15, "created_at": "2024-10-04 12:20:00", "author_name": "luke_perry", "post_id": 3, "deleted": false},
+      {"cid": 5, "content": "These tips are really helpful, thanks!", "upvotes": 25, "downvotes": 1, "created_at": "2024-10-04 13:40:00", "author_name": "jane_smith", "post_id": 5, "deleted": false},
+      {"cid": 6, "content": "He's definitely a player to watch!", "upvotes": 55, "downvotes": 7, "created_at": "2024-10-04 14:25:00", "author_name": "john_doe", "post_id": 7, "deleted": false},
+      {"cid": 7, "content": "VR is changing the game indeed!", "upvotes": 45, "downvotes": 4, "created_at": "2024-10-04 15:10:00", "author_name": "oliver_twist", "post_id": 6, "deleted": false},
+      {"cid": 8, "content": "It's crucial to talk more about this.", "upvotes": 28, "downvotes": 0, "created_at": "2024-10-04 17:25:00", "author_name": "alice_jones", "post_id": 10, "deleted": false},
+      {"cid": 9, "content": "Very insightful, thanks for the great post!", "upvotes": 32, "downvotes": 3, "created_at": "2024-10-04 18:10:00", "author_name": "mike_brown", "post_id": 11, "deleted": false},
+      {"cid": 10, "content": "This is a huge step forward for the industry.", "upvotes": 40, "downvotes": 5, "created_at": "2024-10-04 18:20:00", "author_name": "luke_perry", "post_id": 12, "deleted": false}
+    ]
+  }
+  

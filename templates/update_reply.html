@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <!-- Pure CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/pure-min.css" integrity="sha384-X38yfunGUhNzHpBaEBsWLO+A0HDYOQi8ufWDkZ0k9e0eXz/tH3II7uKZ9msv++Ls" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/grids-responsive-min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/static/css/homePage.css">
+    <link rel="stylesheet" href="/static/css/newPost.css"> 
+    <link rel="stylesheet" href="/static/css/update_post.css">
+    <link rel="icon" href="../static/images/BlueReddit.png" type="image/x-icon">
+    <title>Blueit | Home</title>
+</head>
+
+<body>
+    <div class="header">
+        <div class="home-menu pure-menu pure-menu-horizontal pure-menu-fixed">
+            <div class="header-container">
+                <a href="/" class="pure-menu-link logo-container">
+                    <div class="logo-wrapper">
+                        <img src="../static/images/BlueReddit.png" alt="Logo" class="logo pure-img">
+                        <span class="logo-text">Blewit</span>
+                    </div>
+                </a>
+                <form class="pure-form search-container" method="GET" action="/search">
+                    <input type="text" class="pure-input-rounded search-input" id="search-input" name="q" placeholder="Search..." />
+                    <button type="submit" class="btn btn-primary search-button">Search</button> 
+                </form>
+
+                <div class="auth-buttons">
+                    {% if 'user' in session %}
+                        <a href="{{ url_for('myprofile', username=session['user']['username']) }}" class="btn btn-secondary profile-button">Profile</a> 
+                        <a href="{{ url_for('auth.logout') }}" class="btn btn-danger logout-button">Logout</a> 
+                    {% else %}
+                        <a href="{{ url_for('auth.login') }}" class="btn btn-primary login-button">Login</a> 
+                        <a href="{{ url_for('auth.signup') }}" class="btn btn-success signup-button">Sign Up</a> 
+                    {% endif %}
+                </div>
+
+                <button id="hamburger" class="hamburger">&#9776;</button>
+            </div>        
+        </div>
+    </div>
+
+    <div class="grid-container">
+        <div class="sidebar">
+            <ul class="pure-menu-list"> 
+                
+                 <li class="pure-menu-item">
+                    <a href="#" class="pure-menu-link" data-category="home" id="homeLink">Home</a>
+                </li> 
+                {% set all_categories = [ 'sports', 'games', 'health', 'movies', 'politics'] %}
+
+                <!-- Show all categories if the user is not logged in -->
+                {% if 'user' not in session %}
+                    {% for category in all_categories %}
+                        <li class="pure-menu-item">
+                            <a href="javascript:void(0);" class="pure-menu-link" data-category="{{ category }}" id="category-{{ category }}">{{ category | capitalize }}</a>
+                        </li>
+                    {% endfor %}
+                {% else %} 
+                    <!-- Show only the categories that the logged-in user follows -->
+                    {% for category in category_followed %}
+                        <li class="pure-menu-item">
+                            <a href="javascript:void(0);" class="pure-menu-link" data-category="{{ category }}" id="category-{{ category }}">{{ category | capitalize }}</a>
+                        </li>
+                    {% endfor %} 
+                    <!-- <h1>{{ category_followed }}</h1> -->
+                    <!-- Edit Categories Button -->
+                    <button class="pure-button edit-categories-button" id="editCategoriesButton">Edit Categories</button> 
+        
+                    <!-- Categories edit section, hidden by default -->
+                    <div id="editCategoriesSection" style="display: none;">
+                        <ul class="pure-menu-list">
+                            
+                            
+                            {% for category in all_categories %}
+                        
+                                <li class="pure-menu-item">
+                                    <!-- <h1>{{category}}</h1> -->
+                                    {% if category in category_followed %}
+                                        <button class="pure-button category-button" data-category="{{ category }}" id="removeCategory-{{ category }}">- {{ category | capitalize }}</button>
+                                    {% else %}
+                                        <button class="pure-button category-button" data-category="{{ category }}" id="addCategory-{{ category }}">+ {{ category | capitalize }}</button>
+                                    {% endif %}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                        <button class="pure-button save-categories-button" id="saveCategoriesButton">Save Changes</button>
+                    </div>
+                {% endif %}
+            </ul>
+        </div>
+
+        <div class="content">
+            <div class="new-post-form">
+                <form id="updateReplyForm" action="/api/reply/{{reply.cid}}" method="post" class="pure-form pure-form-stacked">
+                    <fieldset class="form-group">
+                        <legend>Update Reply</legend>
+                        
+                        <div class="form-group"> 
+                            <label for="content">Text:</label>
+                            <textarea class="form-control" id="content" name="content" required>{{reply.content}}</textarea> 
+                        </div>
+
+                        <div class="form-buttons">
+                            <button type="submit" class="btn btn-primary">Update</button> 
+                            <a href="/viewpost?pid={{pid}}" id="cancel" class="btn btn-secondary">Cancel</a>
+                        </div>  
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/js/myprofile.js"></script>
+    <script src="/static/js/updateReply.js"></script>
+    <!-- Bootstrap JS & dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

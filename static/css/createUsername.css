@@ -1,0 +1,160 @@
+/* Full screen height adjustment */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: #181818;
+    color: #E0E0E0;
+    font-family: Arial, sans-serif;
+}
+
+/* Center the entire container both horizontally and vertically */
+.content-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.create-username-container {
+    width: 100%;
+    max-width: 400px;
+    background-color: #242424;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.create-username-container h1 {
+    color: #E0E0E0;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.pure-form-stacked label {
+    text-align: left;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.pure-form-stacked input.pure-input-rounded {
+    background-color: #333;
+    border: 1px solid #444;
+    color: #E0E0E0;
+    padding: 10px;
+    margin-bottom: 15px;
+    width: 100%;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+.pure-form-stacked button.submit-btn {
+    background-color: #1590E3;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    width: 100%;
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+}
+
+.pure-form-stacked button.submit-btn:hover {
+    background-color: #007bb5;
+}
+
+.flash-messages {
+    list-style-type: none;
+    padding: 0;
+    margin-top: 15px;
+}
+
+.flash-messages li {
+    color: #ff3b3b;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 48em) {
+    .create-username-container {
+        padding: 20px;
+    }
+
+    .create-username-container h1 {
+        font-size: 20px;
+    }
+}
+
+/* Header styles */
+.header {
+    background-color: #1a1a1a;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+}
+
+.home-menu {
+    padding: 0.5em;
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+}
+
+.logo-wrapper {
+    display: flex;
+    align-items: center;
+}
+
+.logo {
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
+}
+
+.logo-text {
+    color: #ffffff;
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+.hamburger {
+    display: none;
+    background: none;
+    border: none;
+    color: #ffffff;
+    font-size: 1.5em;
+    cursor: pointer;
+}
+
+.btn-cancel {
+    background-color: #f44336; /* Red color to indicate cancel */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    display: inline-block;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.btn-cancel:hover {
+    background-color: #d32f2f; /* Darker red for hover effect */
+}
+
+@media (max-width: 48em) {
+    .hamburger {
+        display: block;
+    }
+}
